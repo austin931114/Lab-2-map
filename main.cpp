@@ -5,7 +5,23 @@
 #include <fstream>
 #include <iostream>
 #include <utility>
+#include <list>
 using namespace std;
+
+
+int checkCapital(string str) { 
+	int indicator = 0;
+    // Traverse the string 
+		if (str != "I") {
+			for(int i=0; i < 1; i++) { 
+					if (str[i]>='A' && str[i]<='Z') { 
+						indicator = 1;
+						break;
+					} 
+			} 
+		}
+		return indicator;
+} 
 
 int main(int argc, char *argv[]) {
   vector<string> tokens;
@@ -22,6 +38,14 @@ int main(int argc, char *argv[]) {
 							if (isalpha(c)) {  // c = one of the char in token(string)
 									nopunct +=c;       
 							}
+					}
+
+					for (int i = 1; i < token.length(); i++) {
+        		if (isupper(token[i])) {
+							token[i] = token[i] + 32;
+							token.insert(i, " ");
+						}
+
 					}
 					tokens.push_back(nopunct);
 					unique.insert(nopunct);
@@ -75,11 +99,39 @@ int main(int argc, char *argv[]) {
 	state = "";
 	for (int i = 0; i < 100; i++) {
 		int ind = rand() % createText[state].size();
-		cout << createText[state][ind] << " ";
+		// cout << createText[state][ind] << " ";
 		// ind = get a random word from the 'key'
 		state = createText[state][ind];
 
 	}
 	cout << endl;
+
+	map<list<string>, vector<string>> finalText;
+  list<string> textState;
+  for (int i = 0; i < 4; i++) {
+    textState.push_back("");
+  }
+                        
+  for (vector<string>::iterator it=tokens.begin(); it!=tokens.end(); it++) {
+    finalText[textState].push_back(*it);
+    textState.push_back(*it);
+    textState.pop_front();
+  }
 	
+	textState.clear();
+  for (int i = 0; i < 4; i++) {
+    textState.push_back("");
+  }
+  for (int i = 0; i < 150; i++) {
+    int ind = rand() % finalText[textState].size();
+		int capital = 0;
+		capital = checkCapital(finalText[textState][ind]);
+		if (i != 0 & capital == 1) {
+			cout << ".";
+		}
+    cout << " " << finalText[textState][ind];
+    textState.push_back(finalText[textState][ind]);
+    textState.pop_front();
+  }
+	cout  << "." << endl;
 }

@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 
 	string state = "";
 	for(int i = 0; i < 100; i++){
-		cout << wordmap[state] << " ";
+		// cout << wordmap[state] << " ";
 		state = wordmap[state];
 	}
 	cout << endl;
@@ -64,11 +64,22 @@ int main(int argc, char *argv[]) {
 		// state = key, push_back(*it) = push 'value' to vector
 		state = *it;
   }
-	for(map<string, vector<string>>::iterator it=createText.begin(); it!=createText.end(); ++it) {
-		string find = "Nephi";
-		if (it->first == find) {
-			cout << it->second << ", \n";
-		}
+
+	for(vector<string>::iterator it=createText["Nephi"].begin(); it!=createText["Nephi"].end(); it++) { // search every value in 'vector' that has key 'Nephi', so 
+							// only need to loop 'vector' dont need 'map'
+		// cout << *it << ", ";
 	}
 
+	srand(time(NULL)); // this line initializes the random number generated
+										// so you dont get the same thing every time
+	state = "";
+	for (int i = 0; i < 100; i++) {
+		int ind = rand() % createText[state].size();
+		cout << createText[state][ind] << " ";
+		// ind = get a random word from the 'key'
+		state = createText[state][ind];
+
+	}
+	cout << endl;
+	
 }
